@@ -13,8 +13,28 @@ const Portfolio = () => {
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
+
+    const handleScroll = () => {
+      const sections = ['home', 'about', 'skills', 'experience', 'projects', 'contact'];
+      const scrollPosition = window.scrollY + 100;
+
+      sections.forEach(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+          }
+        }
+      });
+    };
+
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const skills = {
@@ -64,6 +84,17 @@ const Portfolio = () => {
       icon: <Terminal className="w-5 h-5" />
     }
   ];
+
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+    setActiveSection(sectionId);
+  };
 
   const SkillCard = ({ category, items, icon }) => (
     <div className="group bg-gray-900/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-800 hover:border-blue-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/10">
@@ -142,14 +173,23 @@ const Portfolio = () => {
               AS
             </div>
             <div className="flex gap-8">
-              {['Home', 'About', 'Skills', 'Projects', 'Contact'].map((item) => (
+              {[
+                { name: 'Home', id: 'home' },
+                { name: 'About', id: 'about' },
+                { name: 'Skills', id: 'skills' },
+                { name: 'Experience', id: 'experience' },
+                { name: 'Projects', id: 'projects' },
+                { name: 'Contact', id: 'contact' }
+              ].map((item) => (
                 <button
-                  key={item}
-                  className="text-gray-300 hover:text-white transition-colors duration-200 relative group"
-                  onClick={() => setActiveSection(item.toLowerCase())}
+                  key={item.id}
+                  className={`text-gray-300 hover:text-white transition-colors duration-200 relative group ${activeSection === item.id ? 'text-white' : ''
+                    }`}
+                  onClick={() => scrollToSection(item.id)}
                 >
-                  {item}
-                  <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 group-hover:w-full transition-all duration-300"></div>
+                  {item.name}
+                  <div className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-blue-400 to-purple-400 transition-all duration-300 ${activeSection === item.id ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}></div>
                 </button>
               ))}
             </div>
@@ -158,13 +198,21 @@ const Portfolio = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
+      <section id="home" className="relative min-h-screen flex items-center justify-center px-6 pt-20">
         <div className={`max-w-4xl text-center transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="mb-6">
             <div className="w-32 h-32 mx-auto mb-8 relative">
               <div className="w-full h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500 p-1">
-                <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                  <User className="w-16 h-16 text-white" />
+                <div className="w-full h-full rounded-full bg-black flex items-center justify-center overflow-hidden">
+                  {/* Image Upload Area */}
+                  <div className="w-full h-full bg-gray-800 rounded-full flex items-center justify-center relative group cursor-pointer">
+                    <img
+                      src="mine.jpg"
+                      alt="Anshika Sagar"
+                      className="w-full h-full object-cover rounded-full"
+                    />
+
+                  </div>
                 </div>
               </div>
               <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-black flex items-center justify-center">
@@ -216,7 +264,7 @@ const Portfolio = () => {
       </section>
 
       {/* About Section */}
-      <section className="py-20 px-6 relative z-10">
+      <section id="about" className="py-20 px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">About Me</span>
@@ -271,7 +319,7 @@ const Portfolio = () => {
       </section>
 
       {/* Skills Section */}
-      <section className="py-20 px-6 relative z-10">
+      <section id="skills" className="py-20 px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Skills & Expertise</span>
@@ -303,7 +351,7 @@ const Portfolio = () => {
       </section>
 
       {/* Experience Section */}
-      <section className="py-20 px-6 relative z-10">
+      <section id="experience" className="py-20 px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Experience</span>
@@ -332,7 +380,7 @@ const Portfolio = () => {
       </section>
 
       {/* Projects Section */}
-      <section className="py-20 px-6 relative z-10">
+      <section id="projects" className="py-20 px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Featured Projects</span>
@@ -347,7 +395,7 @@ const Portfolio = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 px-6 relative z-10">
+      <section id="contact" className="py-20 px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-8">
             <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Let's Connect</span>
