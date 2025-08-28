@@ -172,7 +172,7 @@ const Portfolio = () => {
             <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               AS
             </div>
-            <div className="flex gap-8">
+            <div className="hidden gap-8 sm:flex">
               {[
                 { name: 'Home', id: 'home' },
                 { name: 'About', id: 'about' },
