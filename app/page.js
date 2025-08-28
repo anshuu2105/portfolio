@@ -273,7 +273,7 @@ const Portfolio = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <p className="text-lg text-gray-300 leading-relaxed">
-                I'm a passionate Computer Science student at COER University with a strong foundation in
+                I am a passionate Computer Science student at COER University with a strong foundation in
                 full-stack development and AI technologies. With hands-on experience in building scalable
                 applications and a track record of successful internships.
               </p>
@@ -398,9 +398,9 @@ const Portfolio = () => {
       <section id="contact" className="py-20 px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-8">
-            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Let's Connect</span>
+            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Let us Connect</span>
           </h2>
-          <p className="text-xl text-gray-300 mb-12">Ready to collaborate on exciting projects? Let's build something amazing together!</p>
+          <p className="text-xl text-gray-300 mb-12">Ready to collaborate on exciting projects? Let us build something amazing together!</p>
 
           <div className="flex flex-wrap justify-center gap-6">
             <a
